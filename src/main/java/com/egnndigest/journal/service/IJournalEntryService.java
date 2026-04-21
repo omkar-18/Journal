@@ -1,7 +1,6 @@
 package com.egnndigest.journal.service;
 
 import com.egnndigest.journal.entity.Journal;
-import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,7 +13,7 @@ public interface IJournalEntryService {
 
   public Optional<List<Journal>> getAllJournal(String userName);
 
-  public Optional<Journal> getJournalById(ObjectId journalId, String userName);
+  public Optional<Journal> getJournalById(int journalId, String userName);
 
-  public void deleteById(ObjectId journalId, String userName);
+  public void deleteById(int journalId, String userName);
 }

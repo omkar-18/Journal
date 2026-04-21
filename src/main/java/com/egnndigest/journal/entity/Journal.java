@@ -1,18 +1,24 @@
 package com.egnndigest.journal.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.*;
 
-@Document
+
+@Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Getter
+@Setter
 public class Journal {
 
   @Id
-  private ObjectId id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int id;
 
   private String name;
 

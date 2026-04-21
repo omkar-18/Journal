@@ -2,7 +2,6 @@ package com.egnndigest.journal.controller;
 
 import com.egnndigest.journal.entity.Journal;
 import com.egnndigest.journal.service.IJournalEntryService;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,14 +30,14 @@ public class JournalEntryController {
   }
 
   @GetMapping("/id/{journalId}/userName/{userName}")
-  public ResponseEntity<Journal> getJournalById(@PathVariable ObjectId journalId,@PathVariable String userName) {
+  public ResponseEntity<Journal> getJournalById(@PathVariable int journalId,@PathVariable String userName) {
     Optional<Journal> journal = iJournalEntryService.getJournalById(journalId, userName);
 
     return journal.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.noContent().build());
   }
 
   @DeleteMapping("/id/{journalId}/userName/{userName}")
-  public ResponseEntity<?> deleteById(@PathVariable ObjectId journalId, @PathVariable String userName){
+  public ResponseEntity<?> deleteById(@PathVariable int journalId, @PathVariable String userName){
     iJournalEntryService.deleteById(journalId,userName);
     return ResponseEntity.noContent().build();
 

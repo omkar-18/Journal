@@ -2,7 +2,6 @@ package com.egnndigest.journal.service;
 
 import com.egnndigest.journal.entity.Journal;
 import com.egnndigest.journal.repository.JournalEntryRepository;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,12 +38,12 @@ public class JournalEntryService implements IJournalEntryService{
   }
 
   @Override
-  public Optional<Journal> getJournalById(ObjectId journalId, String userName) {
+  public Optional<Journal> getJournalById(int journalId, String userName) {
     return userService.getJournalById(journalId,userName);
   }
 
   @Override
-  public void deleteById(ObjectId journalId, String userName) {
+  public void deleteById(int journalId, String userName) {
     boolean deletedJournal = userService.deleteJournalById(journalId,userName);
     if(deletedJournal){
       journalEntryRepository.deleteById(journalId);

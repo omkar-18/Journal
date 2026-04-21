@@ -1,14 +1,7 @@
 package com.egnndigest.journal.entity;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.persistence.*;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,27 +12,70 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Document
-@Data
+@Entity
 @NoArgsConstructor
+@AllArgsConstructor
 public class User implements UserDetails {
 
   private static final String AUTHORITIES_DELIMITER = "::";
 
 
   @Id
-  private ObjectId id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int id;
 
   @NonNull
-  @Indexed(unique = true)
   private String userName;
+
   @NonNull
   private String password;
 
   private String authorities;
 
-  @DBRef
+  @OneToMany
   private List<Journal> journals = new ArrayList<>();
+
+  private User(Builder builder){
+    this.userName = builder.userName;
+    this.password = builder.password;
+    this.authorities = builder.authorities;
+    this.journals = builder.journals;
+  }
+
+  public class Builder{
+    private int id;
+    private String userName;
+    private String password;
+    private String authorities;
+    private List<Journal> journals = new ArrayList<>();
+
+    public Builder userName(String userName){
+      this.userName=userName;
+      return this;
+    }
+
+    public Builder password(String password){
+      this.password = password;
+      return this;
+    }
+
+    public Builder authorities(String authorities){
+      this.authorities = authorities;
+      return this;
+    }
+    public Builder journals(List<Journal> journals){
+      this.journals = journals;
+      return this;
+    }
+    public User build(){
+      //we will add validation here
+      return new User(this);
+    }
+
+
+  }
+
+
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -49,8 +85,21 @@ public class User implements UserDetails {
   }
 
   @Override
+  public String getPassword() {
+    return password;
+  }
+
+  @Override
   public String getUsername() {
     return "";
+  }
+
+  public List<Journal> getJournals() {
+    return journals;
+  }
+
+  public void setJournals(List<Journal> journals) {
+    this.journals = journals;
   }
 
   @Override

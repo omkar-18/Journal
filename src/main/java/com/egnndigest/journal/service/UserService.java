@@ -3,7 +3,6 @@ package com.egnndigest.journal.service;
 import com.egnndigest.journal.entity.Journal;
 import com.egnndigest.journal.entity.User;
 import com.egnndigest.journal.repository.UserRepository;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -49,12 +48,12 @@ public class UserService implements  IUserService, UserDetailsService {
     }
   }
 
-  public Optional<Journal> getJournalById(ObjectId journalId,String userName){
+  public Optional<Journal> getJournalById(int journalId,String userName){
     User  user = userRepository.findByUserName(userName);
 
     if (user != null){
       for(int i=0;i<user.getJournals().size();i++){
-        if(user.getJournals().get(i).getId().equals(journalId)){
+        if(user.getJournals().get(i).getId()==(journalId)){
           return Optional.ofNullable(user.getJournals().get(i));
         }
       }
@@ -70,10 +69,10 @@ public class UserService implements  IUserService, UserDetailsService {
 
   }
 
-  public boolean deleteJournalById(ObjectId journalId, String userName){
+  public boolean deleteJournalById(int journalId, String userName){
     User  user = userRepository.findByUserName(userName);
 
-    user.getJournals().removeIf(journal -> journal.getId().equals(journalId));
+    user.getJournals().removeIf(journal -> journal.getId()== (journalId));
     userRepository.save(user);
     return true;
 
