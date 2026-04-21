@@ -22,9 +22,8 @@ public class UserController {
     return users.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.noContent().build());
   }
 
-  @PostMapping("")
+  @PostMapping("/save")
   public User saveUser(@RequestBody User user) {
-    System.out.println("journal is " + user.toString());
     return iUserService.saveUser(user);
   }
 

@@ -1,5 +1,6 @@
 package com.egnndigest.journal.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,6 +16,9 @@ import java.util.stream.Collectors;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
+@Setter
+@Getter
 public class User implements UserDetails {
 
   private static final String AUTHORITIES_DELIMITER = "::";
@@ -42,7 +46,7 @@ public class User implements UserDetails {
     this.journals = builder.journals;
   }
 
-  public class Builder{
+  public static class Builder{
     private int id;
     private String userName;
     private String password;
@@ -91,7 +95,7 @@ public class User implements UserDetails {
 
   @Override
   public String getUsername() {
-    return "";
+    return userName;
   }
 
   public List<Journal> getJournals() {

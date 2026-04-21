@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +22,13 @@ public class UserService implements  IUserService, UserDetailsService {
 
   @Override
   public User saveUser(User user) {
-    return userRepository.save(user);
+    User user1 = new User.Builder().userName(user.getUsername())
+        .password(new BCryptPasswordEncoder().encode(user.getPassword()))
+        .authorities(user.getAuthorities().toString())
+        .journals(user.getJournals())
+        .build();
+
+    return userRepository.save(user1);
   }
 
   @Override
