@@ -2,10 +2,12 @@ package com.egnndigest.journal.service;
 
 import com.egnndigest.journal.entity.Journal;
 import com.egnndigest.journal.entity.User;
-import com.egnndigest.journal.repository.JournalEntryRepository;
 import com.egnndigest.journal.repository.UserRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class UserService implements  IUserService{
+public class UserService implements  IUserService, UserDetailsService {
 
   @Autowired
   UserRepository userRepository;
@@ -75,6 +77,11 @@ public class UserService implements  IUserService{
     userRepository.save(user);
     return true;
 
+  }
+
+  @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    return userRepository.findByUserName(username);
   }
 }
 

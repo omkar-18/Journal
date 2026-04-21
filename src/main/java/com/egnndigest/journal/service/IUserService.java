@@ -1,6 +1,5 @@
 package com.egnndigest.journal.service;
 
-import com.egnndigest.journal.entity.Journal;
 import com.egnndigest.journal.entity.User;
 import org.springframework.stereotype.Component;
 

@@ -1,8 +1,5 @@
 package com.egnndigest.journal.controller;
-
-import com.egnndigest.journal.entity.Journal;
 import com.egnndigest.journal.entity.User;
-import com.egnndigest.journal.service.IJournalEntryService;
 import com.egnndigest.journal.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
