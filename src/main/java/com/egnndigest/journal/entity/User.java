@@ -1,5 +1,6 @@
 package com.egnndigest.journal.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
@@ -32,6 +33,7 @@ public class User implements UserDetails {
   private String userName;
 
   @NonNull
+//  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // ← hide from response
   private String password;
 
   private String authorities;
@@ -79,13 +81,20 @@ public class User implements UserDetails {
 
   }
 
-
-
   @Override
+//  @JsonIgnore  // ← tell Jackson to ignore this for serialization
   public Collection<? extends GrantedAuthority> getAuthorities() {
+    if (this.authorities == null || this.authorities.isEmpty()) {
+      return new ArrayList<>(); // ← null safety
+    }
     return Arrays.stream(this.authorities.split(AUTHORITIES_DELIMITER))
         .map(SimpleGrantedAuthority::new)
         .collect(Collectors.toList());
+  }
+
+  // Add this in User.java
+  public String getRawAuthorities() {
+    return this.authorities;  // ← returns raw string "student::admin"
   }
 
   @Override
